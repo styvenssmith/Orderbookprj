@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "88C40E1D-E8DC-4D6F-A660-27419275BE7F"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "65AB3853-BA7B-4467-9661-B31C12A30BDD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "binsearch/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "338"
+            endingLineNumber = "338"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "15FF759A-9FF3-48D8-B577-DAA47CFB9B9F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "binsearch/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "OrderBook"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "15FF759A-9FF3-48D8-B577-DAA47CFB9B9F - 36128cc5f8f0bb3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderBook::OrderBook()"
+                  moduleName = "binsearch"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/styvens/Documents/Project/orderbook_prj/binsearch/binsearch/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  uuid = "15FF759A-9FF3-48D8-B577-DAA47CFB9B9F - c94b88a3b57ff432"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderBook::~OrderBook()"
+                  moduleName = "binsearch"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/styvens/Documents/Project/orderbook_prj/binsearch/binsearch/main.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "35"
+                  endingLineNumber = "35"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
