@@ -10,9 +10,11 @@
 #include <cmath>
 #include <random>
 #include <set>
+#include <deque>
 
 #include <list>
 
+//extern std::string executionMessage;
 using namespace std;
 
 struct Order {
@@ -41,56 +43,25 @@ struct buy{
 class OrderBook{
     
 private:
+    
     map<int, double>id_price;
     map<double, Order*, buy>BuyOrder;
     map<double, Order*, sell>SellOrder;
     
 public:
+    std::deque<std::string> executionMessages;
     
-    void print(){
-        
-        auto it = BuyOrder.begin();
-        int i = 0;
-        while(it!=BuyOrder.end() && i<5){
-            cout<<it->first<<"\n";
-            Order* temp = it->second;
-            
-            int quant = 0;
-            while(temp){
-                quant+=(temp->quantity);
-                
-                temp = temp->next;
-            }
-            cout<<quant<<" shares \n";
-            i++;
-            it++;
-            
+    void executeMessage(string message){
+        while(executionMessages.size()>=10){
+            executionMessages.pop_front();
         }
-        cout<<"\n";
-        int a = 0;
-        auto at = SellOrder.begin();
-        while(at!=SellOrder.end() && a<5){
-            cout<<"price: "<<at->first<<" ";
-            Order* temp2 = at->second;
-            int quant = 0;
-            while(temp2){
-                quant+=(temp2->quantity);
-                
-                temp2 = temp2->next;
-            }
-            cout<<"shares "<<quant<<"\n";
-            at++;
-            a++;
-        }
-        cout<<"\n";
-        
+        executionMessages.push_back(message);
     }
-    
     void execute_order() {
         auto it = BuyOrder.begin();
         auto at = SellOrder.begin();
         
-        
+        string message;
         while (it != BuyOrder.end() && at != SellOrder.end()) {
             Order* buy = it->second;
             Order* sell = at->second;
@@ -116,10 +87,10 @@ public:
                 if(buy->ordType=="mkt" || sell->ordType=="mkt"){
                     int mn = min(buy->quantity, sell->quantity);
                     if(buy->ordType=="mkt"){
-                        cout << buy->id << " is buying " << mn << " shares from " << sell->id << " at: " << sell->price << " mkt \n";
+                        message = to_string(buy->id)+" is buying "+to_string(mn)+" shares from "+to_string(sell->id)+" at: "+to_string(sell->price)+" mkt";
+
                     }
-                    else
-                    cout << sell->id << " is selling " << mn << " shares to " << buy->id << " at: " << buy->price << " mkt \n";
+                    else message = to_string(sell->id)+" is selling "+to_string(mn)+" shares to "+to_string(buy->id)+" at: "+to_string(buy->price)+" mkt";
                     buy->quantity -= mn;
                     sell->quantity -= mn;
                     
@@ -127,14 +98,14 @@ public:
                 else{
                     if(buy->price>=sell->price){
                         int mn = min(buy->quantity, sell->quantity);
-                        cout << buy->id << " is buying " << mn << " shares from " << sell->id << " at: " << sell->price << " lmt \n";
+                        message = to_string(buy->id)+" is buying "+ to_string(mn)+" shares from "+to_string(sell->id)+" at: "+to_string(sell->price)+" lmt ";
                         buy->quantity -= mn;
                         sell->quantity -= mn;
                     }
                     else return;
                 }
-                
-                
+                executeMessage(message);
+                //executionMessages.push_back(message);
                 
             }
             
@@ -332,43 +303,35 @@ vector<string>lmtmkt{"lmt", "mkt"};
 int timer = 1;
 int id = 1;
 
-void gen_erate(OrderBook& ord, int o_rders, double &current_price){
-    
+void gen_erate(OrderBook& ord, int o_rders, double& current_price) {
     random_device rd;
     mt19937 gen(rd());
-    
-    //sided
-    uniform_int_distribution<int> side(0,1);
-    uniform_int_distribution<int> lm(0,1);
+
+    uniform_int_distribution<int> side(0, 1);
+    uniform_int_distribution<int> lm(0, 1);
     uniform_int_distribution<int> size(1, 10);
-    uniform_real_distribution<float> price(current_price-1.5, current_price+1.5);
-    
-    while(o_rders--){
+    uniform_real_distribution<double> price(current_price - 1.0, current_price + 1.0); // Limit price range
+
+    while (o_rders--) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         int sde = side(gen);
-        int sze = size(gen)*100;
-        double prices = (price(gen)*10)/10;
+        int sze = size(gen) * 100;
+        double prices = (floor(price(gen) * 10) / 10); // Limit prices to 1 decimal place
         current_price = prices;
-        if(current_price<=0) return;
+        if (current_price <= 0) return;
         int limmkt = lm(gen);
-        Order* order = new Order(timer,order_type[sde],prices, sze, id,lmtmkt[limmkt]);
+        Order* order = new Order(timer, order_type[sde], prices, sze, id, lmtmkt[limmkt]);
         ++id;
-        
-        if(order_type[sde]=="bid" && order->quantity>0){
+
+        if (order_type[sde] == "bid" && order->quantity > 0) {
             ord.addBuyOrder(order);
         }
-        else if(order_type[sde]=="ask" && order->quantity>0){
+        else if (order_type[sde] == "ask" && order->quantity > 0) {
             ord.addSellOrder(order);
         }
         else delete order;
-
-        
     }
     timer++;
-    
-    ord.execute_order();
-    
-    
 }
 
 
